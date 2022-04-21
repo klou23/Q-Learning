@@ -1,10 +1,20 @@
+/**
+ * Solver.java
+ * Kevin Lou
+ * 4/19/22
+ * Solves a 3x3 maze problem.
+ * Original code from: https://github.com/technobium/q-learning-java
+ */
+
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class QLearning {
+public class Solver {
 
     private final double alpha = 0.1; // Learning rate
     private final double gamma = 0.9; // Eagerness - 0 looks in the near future, 1 looks in the distant future
@@ -21,13 +31,17 @@ public class QLearning {
     private double[][] Q;    // Q learning
 
 
-    public static void main(String args[]) {
-        QLearning ql = new QLearning();
+    public static void main(String[] args) {
+        solve();
+    }
 
-        ql.init();
-        ql.calculateQ();
-        ql.printQ();
-        ql.printPolicy();
+    public static void solve() {
+        Solver s = new Solver();
+
+        s.init();
+        s.calculateQ();
+        s.printQ();
+        s.printPolicy();
     }
 
     public void init() {
@@ -129,34 +143,16 @@ public class QLearning {
                 }
             }
             initializeQ();
-            printR(R);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
     //Set Q values to R values
-    void initializeQ()
-    {
+    void initializeQ() {
         for (int i = 0; i < statesCount; i++){
             for(int j = 0; j < statesCount; j++){
                 Q[i][j] = (double)R[i][j];
             }
-        }
-    }
-    // Used for debug
-    void printR(int[][] matrix) {
-        System.out.printf("%25s", "States: ");
-        for (int i = 0; i <= 8; i++) {
-            System.out.printf("%4s", i);
-        }
-        System.out.println();
-
-        for (int i = 0; i < statesCount; i++) {
-            System.out.print("Possible states from " + i + " :[");
-            for (int j = 0; j < statesCount; j++) {
-                System.out.printf("%4s", matrix[i][j]);
-            }
-            System.out.println("]");
         }
     }
 
@@ -244,13 +240,22 @@ public class QLearning {
     }
 
     void printQ() {
-        System.out.println("Q matrix");
+        StringBuilder sb = new StringBuilder();
+        sb.append("Q matrix \n");
         for (int i = 0; i < Q.length; i++) {
-            System.out.print("From state " + i + ":  ");
+            sb.append("From state ").append(i).append(":  ");
             for (int j = 0; j < Q[i].length; j++) {
-                System.out.printf("%6.2f ", (Q[i][j]));
+                sb.append(String.format("%6.2f ", (Q[i][j])));
             }
-            System.out.println();
+            sb.append("\n");
         }
+        PrintWriter pw = null;
+        try {
+            pw = new PrintWriter("resources/output.txt");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        pw.println(sb);
+        pw.close();
     }
 }
