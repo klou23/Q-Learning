@@ -30,18 +30,12 @@ public class Solver {
     private int[][] R;       // Reward lookup
     private double[][] Q;    // Q learning
 
-
-    public static void main(String[] args) {
-        solve();
-    }
-
     public static void solve() {
         Solver s = new Solver();
 
         s.init();
         s.calculateQ();
         s.printQ();
-        s.printPolicy();
     }
 
     public void init() {
