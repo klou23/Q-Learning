@@ -1,9 +1,18 @@
+/**
+ * Generator.java
+ * Kevin Lou
+ * 4/19/22
+ * Generates a 3x3 maze and then uses the Solver class to solve it.
+ */
+
 import java.io.IOException;
 import java.io.PrintWriter;
 
 public class Generator {
 
     public static void main(String[] args) throws IOException {
+
+        //generate maze
         char[][] maze = new char[3][3];
         for(int i = 0; i < 3; i++){
             for(int j = 0; j < 3; j++){
@@ -17,6 +26,7 @@ public class Generator {
         int randY = (int) (3*Math.random());
         maze[randX][randY] = 'F';
 
+        //Print maze to file
         StringBuilder sb = new StringBuilder();
         for(int i = 0; i < 3; i++){
             for(int j = 0; j < 3; j++) sb.append(maze[i][j]);
